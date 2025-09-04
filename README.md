@@ -95,7 +95,13 @@ MedyVend revolutionizes medication distribution by combining smart vending hardw
 │  ═══════════════════════════════════╪═══════════════════════════════════         │
 │                                   │                                             │
 │  ┌─────────────────────────────────┼─────────────────────────────────┐           │
-│  │             MedyVend Machine (Physical Unit)                     │           │
+│  │                MedyVend Hardware Platforms                       │           │
+│  │                                                                   │           │
+│  │  ┌─────────────────┐           ┌─────────────────┐                │           │
+│  │  │   MedyVend v1   │           │   MedyVend v2   │                │           │
+│  │  │ (ESP32-based)   │           │ (Raspberry Pi)  │                │           │
+│  │  │   [CURRENT]     │           │ [IN DEVELOPMENT] │               │           │
+│  │  └─────────────────┘           └─────────────────┘                │           │
 │  │                                                                   │           │
 │  │  ┌─────────────────────────────────────────────────────────────┐ │           │
 │  │  │               Raspberry Pi 4 (Main Controller)              │ │           │
@@ -140,7 +146,16 @@ MedyVend revolutionizes medication distribution by combining smart vending hardw
 
 ### 🔧 Hardware Architecture Details
 
-#### 🖥️ **Raspberry Pi 4 - Main Controller**
+The MedyVend system has evolved through two distinct hardware platforms:
+
+- **MedyVend v1**: Current production system based on ESP32 microcontroller
+- **MedyVend v2**: Next-generation system in development based on Raspberry Pi 4
+
+---
+
+## 🚀 MedyVend v1 - ESP32-Based Architecture (Current Production)
+
+### ⚡ **ESP32-WROOM-32D - Main Controller**
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                      Raspberry Pi 4 (4GB RAM)                       │
