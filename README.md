@@ -158,34 +158,38 @@ The MedyVend system has evolved through two distinct hardware platforms:
 ### ⚡ **ESP32-WROOM-32D - Main Controller**
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                      Raspberry Pi 4 (4GB RAM)                       │
+│                     ESP32-WROOM-32D (v1 Controller)                 │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
-│  Operating System: Raspberry Pi OS (Debian-based)                   │
-│  Architecture: ARM64 (Cortex-A72 Quad-core 1.5GHz)                │
+│  Microcontroller: Dual-core Tensilica Xtensa LX6 @ 240MHz          │
+│  Memory: 520KB SRAM, 4MB Flash                                      │
+│  Connectivity: WiFi 802.11 b/g/n, Bluetooth 4.2 + BLE              │
+│  Operating Voltage: 3.3V                                            │
+│  Power Consumption: 80mA (active), 5µA (deep sleep)                 │
 │                                                                     │
 │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
-│  │   Application   │  │   Middleware    │  │   System        │     │
-│  │   Layer         │  │   Layer         │  │   Services      │     │
+│  │   Motor         │  │   Sensor        │  │   Communication │     │
+│  │   Control       │  │   Interface     │  │   Module        │     │
 │  │                 │  │                 │  │                 │     │
-│  │ • MedyVend App  │  │ • RabbitMQ      │  │ • Systemd       │     │
-│  │ • Health Monitor│  │   Client        │  │ • NetworkManager│     │
-│  │ • Log Manager   │  │ • MQTT Broker   │  │ • SSH Daemon    │     │
-│  │ • Update Service│  │ • Redis Cache   │  │ • Cron Jobs     │     │
-│  │ • Backup Agent  │  │ • Message Queue │  │ • Log Rotation  │     │
+│  │ • PWM Control   │  │ • ADC Readings  │  │ • WiFi Client   │     │
+│  │ • Step Timing   │  │ • Digital I/O   │  │ • RabbitMQ AMQP │     │
+│  │ • Direction     │  │ • Interrupt     │  │ • JSON Protocol │     │
+│  │   Control       │  │   Handling      │  │ • OTA Updates   │     │
+│  │ • Emergency     │  │ • Debouncing    │  │ • Deep Sleep    │     │
+│  │   Stop          │  │ • Calibration   │  │ • Watchdog      │     │
 │  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
 │                                                                     │
 │  ┌─────────────────────────────────────────────────────────────────┐ │
-│  │                    Communication Interfaces                     │ │
+│  │                    GPIO Pin Configuration                       │ │
 │  │                                                                 │ │
-│  │  WiFi 802.11ac     │  Ethernet          │  USB 3.0 x4         │ │
-│  │  Bluetooth 5.0     │  GPIO 40-pin       │  HDMI x2             │ │
-│  │  Camera Interface  │  I2C/SPI/UART      │  Audio 3.5mm         │ │
+│  │  Digital I/O: 34 pins  │  Analog ADC: 18 pins  │ PWM: 16 ch   │ │
+│  │  UART: 3 interfaces   │  SPI: 4 interfaces    │ I2C: 2 ports │ │
+│  │  Touch: 10 sensors     │  DAC: 2 channels      │ RTC: Built-in │ │
 │  └─────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-#### ⚡ **ESP32 - Real-time Hardware Controller**
+### 🔌 **V1 Hardware Components**
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
 │                       ESP32-WROOM-32D                               │
@@ -221,6 +225,88 @@ The MedyVend system has evolved through two distinct hardware platforms:
 │  └─────────────────────────────────────────────────────────────────┘ │
 └─────────────────────────────────────────────────────────────────────┘
 ```
+
+---
+
+## 🚀 MedyVend v2 - Raspberry Pi-Based Architecture (In Development)
+
+### 🖥️ **Raspberry Pi 4 - Advanced Controller**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                 Raspberry Pi 4 (v2 Next-Gen Controller)             │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  Operating System: Raspberry Pi OS (Debian-based)                   │
+│  CPU: ARM Cortex-A72 quad-core @ 1.5GHz                            │
+│  RAM: 4GB LPDDR4-3200                                               │
+│  Storage: 64GB MicroSD Card (Class 10) + 128GB SSD                  │
+│  Connectivity: WiFi 802.11ac, Bluetooth 5.0, Gigabit Ethernet      │
+│                                                                     │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
+│  │   Application   │  │   Middleware    │  │   System        │     │
+│  │   Layer         │  │   Layer         │  │   Services      │     │
+│  │                 │  │                 │  │                 │     │
+│  │ • MedyVend App  │  │ • RabbitMQ      │  │ • Systemd       │     │
+│  │ • AI Analytics  │  │   Client        │  │ • NetworkManager│     │
+│  │ • Health Monitor│  │ • Redis Cache   │  │ • SSH Daemon    │     │
+│  │ • Auto Update   │  │ • MQTT Broker   │  │ • Docker        │     │
+│  │ • Backup Agent  │  │ • Message Queue │  │ • Log Rotation  │     │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │                    Communication Interfaces                     │ │
+│  │                                                                 │ │
+│  │  WiFi 802.11ac     │  Ethernet          │  USB 3.0 x4         │ │
+│  │  Bluetooth 5.0     │  GPIO 40-pin       │  HDMI x2             │ │
+│  │  Camera Interface  │  I2C/SPI/UART      │  Audio 3.5mm         │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 🔌 **V2 Enhanced Features**
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                        Enhanced V2 Capabilities                     │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐     │
+│  │   AI/ML         │  │   Advanced      │  │   Enhanced      │     │
+│  │   Processing    │  │   Monitoring    │  │   Security      │     │
+│  │                 │  │                 │  │                 │     │
+│  │ • TensorFlow    │  │ • Real-time     │  │ • Hardware      │     │
+│  │   Lite          │  │   Analytics     │  │   Encryption    │     │
+│  │ • Computer      │  │ • Predictive    │  │ • Secure Boot   │     │
+│  │   Vision        │  │   Maintenance   │  │ • TPM Module    │     │
+│  │ • Edge          │  │ • Usage         │  │ • Biometric     │     │
+│  │   Computing     │  │   Patterns      │  │   Auth          │     │
+│  └─────────────────┘  └─────────────────┘  └─────────────────┘     │
+│                                                                     │
+│  ┌─────────────────────────────────────────────────────────────────┐ │
+│  │                    Advanced I/O Capabilities                    │ │
+│  │                                                                 │ │
+│  │  Touch Display: 7" Capacitive  │  Camera: 8MP Module v2        │ │
+│  │  Audio: Hi-Fi DAC + Speaker    │  Storage: NVMe SSD Support    │ │
+│  │  Power: UPS Battery Backup     │  Cooling: Active Fan Control  │ │
+│  └─────────────────────────────────────────────────────────────────┘ │
+└─────────────────────────────────────────────────────────────────────┘
+```
+
+### 📊 **V1 vs V2 Comparison**
+
+| Feature | MedyVend v1 (ESP32) | MedyVend v2 (Raspberry Pi) |
+|---------|-------------------|---------------------------|
+| **Controller** | ESP32-WROOM-32D | Raspberry Pi 4 (4GB) |
+| **CPU** | Dual-core 240MHz | Quad-core ARM 1.5GHz |
+| **Memory** | 520KB SRAM | 4GB LPDDR4 |
+| **Storage** | 4MB Flash | 64GB+ SSD |
+| **OS** | FreeRTOS | Full Linux (Debian) |
+| **AI/ML** | None | TensorFlow Lite |
+| **Display** | None | 7" Touchscreen |
+| **Camera** | None | 8MP Module |
+| **Power** | 5V 2A | 5V 3A + UPS |
+| **Status** | **Production** | **Development** |
+
+---
 
 ### 🔄 **Communication Architecture**
 
@@ -394,10 +480,10 @@ The MedyVend system has evolved through two distinct hardware platforms:
 
 ### 🔧 **Software Stack & Communication Protocols**
 
-#### 💻 **Embedded Software Architecture**
+#### 💻 **V2 Embedded Software Architecture (Raspberry Pi)**
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
-│                    Raspberry Pi Software Stack                      │
+│              MedyVend v2 - Raspberry Pi Software Stack              │
 ├─────────────────────────────────────────────────────────────────────┤
 │                                                                     │
 │  Operating System Layer:                                            │
@@ -528,8 +614,8 @@ The MedyVend system has evolved through two distinct hardware platforms:
 │  │  └── Queues: machine.{id}.cmd, machine.{id}.status             │ │
 │  │                                                                 │ │
 │  │  HTTP/HTTPS (REST API):                                        │ │
-│  │  ├── VendTrails API: https://emapi.vendtrails.com              │ │
-│  │  ├── Laravel Backend: https://api.medyvend.com                 │ │
+│  │  ├── VendTrails API: [REDACTED]                               │ │
+│  │  ├── Laravel Backend: [REDACTED]                               │ │
 │  │  ├── Authentication: JWT tokens                                │ │
 │  │  └── Rate Limiting: 100 requests/minute                        │ │
 │  │                                                                 │ │
@@ -784,7 +870,7 @@ CREATE TABLE vending_machine_inventory (
 
 ### First Login
 - **URL**: `http://localhost:8000/admin/dashboard`
-- **Default Admin**: admin@medyvend.com / password123
+- **Default Admin**: [REDACTED] / [REDACTED]
 
 ---
 
@@ -1023,7 +1109,7 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 # VendTrails Integration
-VENDTRAILS_API_URL=https://emapi.vendtrails.com/api
+VENDTRAILS_API_URL=
 VENDTRAILS_COMPANY_NUM=2
 
 # Logging
@@ -1204,7 +1290,7 @@ php artisan queue:failed
 tail -f storage/logs/vending_trails.log
 
 # Test API connectivity
-curl -X POST "https://emapi.vendtrails.com/api/generate_token" \
+curl -X POST "[API_URL]/generate_token" \
   -d "company_num=2"
 ```
 
@@ -1240,9 +1326,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Video Tutorials**: Step-by-step implementation guides
 
 ### Professional Support
-- **Technical Support**: support@medyvend.com
-- **Sales Inquiries**: sales@medyvend.com
-- **Partnership**: partners@medyvend.com
+- **Technical Support**: [REDACTED]
+- **Sales Inquiries**: [REDACTED]
+- **Partnership**: [REDACTED]
 
 ---
 

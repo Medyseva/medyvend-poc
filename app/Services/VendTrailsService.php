@@ -8,7 +8,12 @@ use Illuminate\Support\Facades\Log;
 
 class VendTrailsService
 {
-    protected $baseUrl = 'https://emapi.vendtrails.com/api';
+    protected $baseUrl;
+
+    public function __construct()
+    {
+        $this->baseUrl = config('services.vendtrails.api_url');
+    }
 
     protected function getMachineTokens($machineNum): ?VendingMachine
     {
